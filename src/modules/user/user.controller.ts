@@ -33,6 +33,7 @@ const getAllUsers = async (req: Request, res: Response) => {
         res.status(200).json({
             "message": "Express Server",
             "Author": "Subroto Chanda shuvo",
+            data: result.rows
         })
     } catch (error: any) {
         res.status(500).json({
@@ -72,8 +73,66 @@ const getSingleUser = async (req: Request, res: Response) => {
     }
 }
 
+const updateUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const result = await userService.updateUserFromDB(req.body, id as string )
+
+        if(result.rows.length === 0) { 
+            return res.status(500).json({
+                success: false,
+                message: "User not found!",
+                data : {}
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Users retrieved successfully!",
+            data: result.rows,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error
+        });
+    }
+}
+
+
+const deleteUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const result = await userService.deleteUserFromDB(id as string);
+
+        if(result.rowCount === 0) { 
+            return res.status(500).json({
+                success: false,
+                message: "User not found!",
+                data : {}
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            message: "Users retrieved successfully!",
+            data: result.rows,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: error
+        });
+    }
+}
+
 export const userController = {
     createUser,
     getAllUsers,
-    getSingleUser
+    getSingleUser,
+    updateUser,
+    deleteUser
 }
