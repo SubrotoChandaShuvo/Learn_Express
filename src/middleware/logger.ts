@@ -10,7 +10,7 @@ URL    : ${req.url}
 --------------------------------
 `;
     fs.appendFile('logger.text', log, (err) => {
-        console.log(err);
+        // console.log(err);
     })
     next();
 }

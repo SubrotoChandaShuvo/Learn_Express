@@ -6,7 +6,7 @@ const createProfileIntoDB = async (payload: any) => {
     //First check if the user is exists
     const user = await pool.query(`
         SELECT * FROM users WHERE id=$1
-        `, [user_id])
+        `, [user_id]);
 
     // console.log(user);
     if (user.rows.length === 0) {
